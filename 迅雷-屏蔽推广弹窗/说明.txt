@@ -1,0 +1,27 @@
+﻿屏蔽迅雷推广弹窗
+========================================
+
+【类型】
+软件补丁：改 hosts、禁用本地插件、改迅雷自己的配置文件。
+通用用法、文件结构、备份机制见库根 README.md。
+
+【屏蔽了什么】
+  1. 会员付费弹窗 —— 它是本地 Electron 插件 VipPayCenter2025，hosts 拦不住，
+     只能把插件目录改名成 .off 让迅雷加载不到
+  2. 活动 / 推广域名 —— 8 个 xunlei.com 子域，走 hosts 拦
+  3. 客户端里两个提示开关 —— GUIDE_INFO.isShowBubble、VipDownload.TeamEnteranceSwitch
+
+【副作用】
+  - 改 C:\Windows\System32\drivers\etc\hosts（需要管理员；改前自动备份成 hosts.bak_*_thunder）
+  - 执行时会先**强制退出迅雷**，结束后再启动回来。不想被打断加 -KeepRunning
+  - 插件备份在迅雷目录下的 _plugin_backup\（故意放在 plugins 之外，避免被当插件扫）
+
+【还原】
+  卸载.ps1（= 应用.ps1 -Restore）：移除 hosts 块、恢复插件名、把两个开关打开。
+  注意 hosts 的 .bak_* 备份文件会一直留在系统目录里，脚本不自动删。
+
+【想先看会做什么】
+  .\应用.ps1 -WhatIfOnly      预演，不改任何东西
+
+【细节】
+  完整原理（为什么 hosts 拦不住广告、域名是怎么测出来的）见同目录《原理说明.md》。

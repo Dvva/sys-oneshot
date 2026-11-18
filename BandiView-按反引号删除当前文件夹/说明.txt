@@ -1,9 +1,9 @@
 ﻿BandiView 按 ` 删除当前图片所在文件夹
 ========================================
 
-【这是什么】
-一次性补丁：跑一次装好，之后长期生效，随时可卸载。
-属于「软件补丁」，不改 BandiView 本体文件，只改它的一项设置。
+【类型】
+软件补丁：不改 BandiView 本体文件，只改它的一项设置（外部编辑器）。
+通用用法、文件结构、备份机制见库根 README.md。
 
 【功能】
 在 BandiView 里看图时按 ` 键：
@@ -11,27 +11,12 @@
   2. 自动切到下一个文件夹（避免删除后报错）
   3. 把原文件夹（含图片）移到回收站
 
-【怎么用】
-  安装：双击「应用.cmd」（或 .\应用.ps1）
-  卸载：双击「卸载.cmd」——会先把注册表导出到 _备份\<时间戳>\，再恢复原状
-
-【为什么是一对脚本】
-  应用.ps1  全部逻辑（支持 -Detect / -Restore / -Force）
-  卸载.ps1  只是 应用.ps1 -Restore 的快捷入口
-  _备份\    每次卸载前的注册表备份，出问题双击里面的 .reg 就能退回
-
-【文件说明】
-  应用.ps1       应用 / 检测 / 卸载 全部逻辑
-  卸载.ps1       卸载入口（等价于 应用.ps1 -Restore）
-  主脚本.ps1     真正干活的脚本：确认、切换相邻文件夹、删到回收站
-  启动器.exe     启动器（C# 编译，隐藏窗口调用 主脚本.ps1，不会被安全警告拦）
-  启动器源码.cs  启动器源码（改完可用 csc.exe 重新编译，命令写在文件头）
-
 【装到哪里】
   %APPDATA%\BandiViewTools\     主脚本.ps1 + 启动器.exe
   注册表 HKCU\Software\BandiView
     extProg0    = ...\BandiViewTools\启动器.exe
     userKeys.34 = CMD_LAUNCH_EDITOR|c0|1
+  卸载时先把整棵 HKCU\Software\BandiView 导出到 _备份\，再恢复成 mspaint.exe。
 
 【可调项（环境变量）】
   BV_NO_CONFIRM=1            跳过确认框，直接删
@@ -39,19 +24,19 @@
 
 【常见问题】
 Q: 按 ` 没反应？
-A: BandiView 需要重启一次；另外确认注册表 HKCU\Software\BandiView 的
-   extProg0 指向 %APPDATA%\BandiViewTools\启动器.exe
+A: BandiView 需要重启一次；另外确认注册表 extProg0 指向 启动器.exe
 
 Q: 提示「打开文件-安全警告」？
-A: 用 exe 启动器就是为了避开这个；如仍出现，在 启动器.exe 上右键 -> 属性 -> 解除锁定
+A: 用 exe 启动器就是为了避开它；如仍出现，在 启动器.exe 上右键 -> 属性 -> 解除锁定
 
 Q: 删除后 BandiView 报错？
 A: 说明相邻没有其他文件夹可切换，正常现象，忽略即可
 
-Q: 想恢复原状？
-A: 双击「卸载.cmd」
+Q: 改了 主脚本.ps1 怎么生效？
+A: 重跑一次 应用.ps1（会覆盖 %APPDATA% 里的副本）
 
 【技术细节】
 - 删除用 Shell32 SHFileOperation（FOF_ALLOWUNDO 进回收站，静默无二次确认）
 - 只对 BandiView 生效，不影响其它程序
 - 日志写在 %TEMP%\bv_delete.log
+- 启动器源码改了要重新编译，命令写在 启动器源码.cs 文件头
