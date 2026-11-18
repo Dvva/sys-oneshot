@@ -1,0 +1,39 @@
+Windows Registry Editor Version 5.00
+; https://www.bilibili.com/opus/935783355843084306
+; 关闭Edge下载警告
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Edge\ExemptFileTypeDownloadWarnings]
+
+"1"="{\"file_extension\": \"exe\", \"domains\": [\"*\"]}"
+
+"2"="{\"file_extension\": \"reg\", \"domains\": [\"*\"]}"
+
+"3"="{\"file_extension\": \"bat\", \"domains\": [\"*\"]}"
+
+"4"="{\"file_extension\": \"vbs\", \"domains\": [\"*\"]}"
+
+"6"="{\"file_extension\": \"msi\", \"domains\": [\"*\"]}"
+
+"7"="{\"file_extension\": \"js\", \"domains\": [\"*\"]}"
+
+"8"="{\"file_extension\": \"inf\", \"domains\": [\"*\"]}"
+
+"9"="{\"file_extension\": \"cmd\", \"domains\": [\"*\"]}"
+
+"10"="{\"file_extension\": \"dll\", \"domains\": [\"*\"]}"
+
+"11"="{\"file_extension\": \"sys\", \"domains\": [\"*\"]}"
+
+"12"="{\"file_extension\": \"url\", \"domains\": [\"*\"]}"
+
+"13"="{\"file_extension\": \"ocx\", \"domains\": [\"*\"]}"
+
+"14"="{\"file_extension\": \"apk\", \"domains\": [\"*\"]}"
+
+"15"="{\"file_extension\": \"crx\", \"domains\": [\"*\"]}"
+
+"16"="{\"file_extension\": \"xml\", \"domains\": [\"*\"]}"
+
+"17"="{\"file_extension\": \"msc\", \"domains\": [\"*\"]}"
+
+"18"="{\"file_extension\": \"mht\", \"domains\": [\"*\"]}"

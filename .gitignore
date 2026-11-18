@@ -1,0 +1,6 @@
+# 卸载前自动生成的备份，属于本机状态，不进仓库
+_备份/
+_plugin_backup/
+
+# hosts / config.json 的手工备份
+*.bak_*
