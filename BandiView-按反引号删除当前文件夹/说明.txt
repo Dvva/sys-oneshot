@@ -18,6 +18,22 @@
     userKeys.34 = CMD_LAUNCH_EDITOR|c0|1
   卸载时先把整棵 HKCU\Software\BandiView 导出到 _备份\，再恢复成 mspaint.exe。
 
+【改快捷键】
+  编辑同目录的 配置.toml，改两行，然后重跑 应用.cmd：
+
+    [快捷键]
+    按键码 = "c0"    ← 触发键的虚拟键码，c0 = 反引号 `
+    槽位   = 34      ← 写进注册表的位置，0-35
+
+  按键码是 Windows 的虚拟键码（十六进制小写），常用：
+    c0=`   c1=空格左边那个   dc=\   bb==   bc=,   be=.   bf=/   ba=;
+  完整对照搜 "Virtual-Key Codes"。
+
+  【槽位】如果按了没反应，多半是这个位置被 BandiView 别的快捷键占了——
+  换个没用过的数字（35、33…）再跑一次 应用.cmd 即可，不用卸载。
+
+  改完想确认：.\应用.ps1 -Detect，退出码 0 = 已按新配置生效。
+
 【可调项（环境变量）】
   BV_NO_CONFIRM=1            跳过确认框，直接删
   BV_NAV_DIR=next|prev|none  删除后切换方向，默认 next

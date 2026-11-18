@@ -6,4 +6,4 @@ if %errorlevel% neq 0 (
     powershell -NoProfile -Command "Start-Process -FilePath '%~f0' -Verb RunAs"
     exit /b
 )
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0–∂‘ÿ.ps1"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0”¶”√.ps1" -Restore

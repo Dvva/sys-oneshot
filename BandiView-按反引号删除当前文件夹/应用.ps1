@@ -11,6 +11,8 @@
 #   .\应用.ps1 -Force       已生效也强制重装
 #
 # 退出码（-Detect 时）：0=已生效  1=未生效  2=不适用
+#
+# 配置：同目录的「配置.toml」可改触发键（按键码）和注册表槽位（槽位），改完重跑本脚本生效。
 # ============================================================
 param(
     [switch]$Detect,
@@ -24,10 +26,35 @@ $ErrorActionPreference = 'Stop'
 $src  = Split-Path -Parent $MyInvocation.MyCommand.Path
 $dest = Join-Path $env:APPDATA 'BandiViewTools'
 $reg  = 'HKCU:\Software\BandiView'
-$keyCode   = 'c0'     # ` 键（VK_OEM_3）
-$slot      = 34       # userKeys 槽位
+$keyCode   = 'c0'     # ` 键（VK_OEM_3），可被 配置.toml 覆盖
+$slot      = 34       # userKeys 槽位，可被 配置.toml 覆盖
 $exeName    = '启动器.exe'
 $scriptName = '主脚本.ps1'
+
+# ---------- 读同目录的 配置.toml（没有就用上面的默认值） ----------
+$cfgPath = Join-Path $src '配置.toml'
+if (Test-Path -LiteralPath $cfgPath) {
+    foreach ($line in (Get-Content -LiteralPath $cfgPath -Encoding UTF8)) {
+        $t = $line.Trim()
+        if ($t -eq '' -or $t.StartsWith('#') -or $t.StartsWith('[')) { continue }
+        $i = $t.IndexOf('=')
+        if ($i -lt 1) { continue }
+        $k = $t.Substring(0, $i).Trim()
+        $v = $t.Substring($i + 1).Trim().Trim('"').Trim("'")
+        switch ($k) {
+            '按键码' {
+                if ($v -match '^[0-9a-fA-F]{2}$') { $keyCode = $v.ToLower() }
+                else { Write-Host "  [!] 配置.toml 的 按键码 不是两位十六进制，已忽略: $v" -ForegroundColor Yellow }
+            }
+            '槽位' {
+                $n = 0
+                if ([int]::TryParse($v, [ref]$n) -and $n -ge 0 -and $n -le 35) { $slot = $n }
+                else { Write-Host "  [!] 配置.toml 的 槽位 必须是 0-35 的整数，已忽略: $v" -ForegroundColor Yellow }
+            }
+        }
+    }
+}
+
 $destExe    = Join-Path $dest $exeName
 $destSlot   = "userKeys.$slot"
 $slotValue  = "CMD_LAUNCH_EDITOR|$keyCode|1"
