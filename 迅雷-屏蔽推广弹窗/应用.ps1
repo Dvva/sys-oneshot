@@ -349,5 +349,5 @@ if ($script:errors.Count -gt 0) {
 }
 
 Write-Host ''
-Write-Host '还原: .\卸载.ps1' -ForegroundColor DarkGray
+Write-Host '还原: .\卸载.cmd' -ForegroundColor DarkGray
 Write-Host ''
